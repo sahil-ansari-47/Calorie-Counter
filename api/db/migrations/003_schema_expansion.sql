@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS food_catalog_quantity_backup (
