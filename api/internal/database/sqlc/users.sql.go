@@ -12,7 +12,7 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (id, email, password_hash) VALUES ($1, $2, $3) RETURNING id, email, password_hash, created_at, updated_at
+INSERT INTO users (id, email, password_hash) VALUES ($1, $2, $3) RETURNING id, email, password_hash, display_name, date_of_birth, age, height_cm, sex, activity_level, timezone, maintenance_calories, recommended_calories, recommended_protein_g_day, recommended_carbohydrates_g_day, recommended_fat_g_day, recommended_fiber_g_day, recommended_sugars_g_day, recommended_saturated_fat_g_day, recommended_calcium_mg_week, recommended_iron_mg_week, recommended_magnesium_mg_week, recommended_phosphorus_mg_week, recommended_potassium_mg_week, recommended_zinc_mg_week, recommended_copper_mg_week, recommended_manganese_mg_week, recommended_selenium_mcg_week, recommended_vitamin_a_mcg_week, recommended_vitamin_c_mg_week, recommended_vitamin_d_mcg_week, recommended_vitamin_e_mg_week, recommended_vitamin_k_mcg_week, recommended_thiamin_mg_week, recommended_riboflavin_mg_week, recommended_niacin_mg_week, recommended_pantothenic_acid_mg_week, recommended_vitamin_b6_mg_week, recommended_biotin_mcg_week, recommended_folate_mcg_week, recommended_vitamin_b12_mcg_week, recommended_sodium_mg_day, recommended_cholesterol_mg_day, recommended_caffeine_mg_day, created_at, updated_at
 `
 
 type CreateUserParams struct {
@@ -28,6 +28,46 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.ID,
 		&i.Email,
 		&i.PasswordHash,
+		&i.DisplayName,
+		&i.DateOfBirth,
+		&i.Age,
+		&i.HeightCm,
+		&i.Sex,
+		&i.ActivityLevel,
+		&i.Timezone,
+		&i.MaintenanceCalories,
+		&i.RecommendedCalories,
+		&i.RecommendedProteinGDay,
+		&i.RecommendedCarbohydratesGDay,
+		&i.RecommendedFatGDay,
+		&i.RecommendedFiberGDay,
+		&i.RecommendedSugarsGDay,
+		&i.RecommendedSaturatedFatGDay,
+		&i.RecommendedCalciumMgWeek,
+		&i.RecommendedIronMgWeek,
+		&i.RecommendedMagnesiumMgWeek,
+		&i.RecommendedPhosphorusMgWeek,
+		&i.RecommendedPotassiumMgWeek,
+		&i.RecommendedZincMgWeek,
+		&i.RecommendedCopperMgWeek,
+		&i.RecommendedManganeseMgWeek,
+		&i.RecommendedSeleniumMcgWeek,
+		&i.RecommendedVitaminAMcgWeek,
+		&i.RecommendedVitaminCMgWeek,
+		&i.RecommendedVitaminDMcgWeek,
+		&i.RecommendedVitaminEMgWeek,
+		&i.RecommendedVitaminKMcgWeek,
+		&i.RecommendedThiaminMgWeek,
+		&i.RecommendedRiboflavinMgWeek,
+		&i.RecommendedNiacinMgWeek,
+		&i.RecommendedPantothenicAcidMgWeek,
+		&i.RecommendedVitaminB6MgWeek,
+		&i.RecommendedBiotinMcgWeek,
+		&i.RecommendedFolateMcgWeek,
+		&i.RecommendedVitaminB12McgWeek,
+		&i.RecommendedSodiumMgDay,
+		&i.RecommendedCholesterolMgDay,
+		&i.RecommendedCaffeineMgDay,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -35,7 +75,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, email, password_hash, created_at, updated_at FROM users WHERE email = $1 LIMIT 1
+SELECT id, email, password_hash, display_name, date_of_birth, age, height_cm, sex, activity_level, timezone, maintenance_calories, recommended_calories, recommended_protein_g_day, recommended_carbohydrates_g_day, recommended_fat_g_day, recommended_fiber_g_day, recommended_sugars_g_day, recommended_saturated_fat_g_day, recommended_calcium_mg_week, recommended_iron_mg_week, recommended_magnesium_mg_week, recommended_phosphorus_mg_week, recommended_potassium_mg_week, recommended_zinc_mg_week, recommended_copper_mg_week, recommended_manganese_mg_week, recommended_selenium_mcg_week, recommended_vitamin_a_mcg_week, recommended_vitamin_c_mg_week, recommended_vitamin_d_mcg_week, recommended_vitamin_e_mg_week, recommended_vitamin_k_mcg_week, recommended_thiamin_mg_week, recommended_riboflavin_mg_week, recommended_niacin_mg_week, recommended_pantothenic_acid_mg_week, recommended_vitamin_b6_mg_week, recommended_biotin_mcg_week, recommended_folate_mcg_week, recommended_vitamin_b12_mcg_week, recommended_sodium_mg_day, recommended_cholesterol_mg_day, recommended_caffeine_mg_day, created_at, updated_at FROM users WHERE email = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
@@ -45,6 +85,290 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.ID,
 		&i.Email,
 		&i.PasswordHash,
+		&i.DisplayName,
+		&i.DateOfBirth,
+		&i.Age,
+		&i.HeightCm,
+		&i.Sex,
+		&i.ActivityLevel,
+		&i.Timezone,
+		&i.MaintenanceCalories,
+		&i.RecommendedCalories,
+		&i.RecommendedProteinGDay,
+		&i.RecommendedCarbohydratesGDay,
+		&i.RecommendedFatGDay,
+		&i.RecommendedFiberGDay,
+		&i.RecommendedSugarsGDay,
+		&i.RecommendedSaturatedFatGDay,
+		&i.RecommendedCalciumMgWeek,
+		&i.RecommendedIronMgWeek,
+		&i.RecommendedMagnesiumMgWeek,
+		&i.RecommendedPhosphorusMgWeek,
+		&i.RecommendedPotassiumMgWeek,
+		&i.RecommendedZincMgWeek,
+		&i.RecommendedCopperMgWeek,
+		&i.RecommendedManganeseMgWeek,
+		&i.RecommendedSeleniumMcgWeek,
+		&i.RecommendedVitaminAMcgWeek,
+		&i.RecommendedVitaminCMgWeek,
+		&i.RecommendedVitaminDMcgWeek,
+		&i.RecommendedVitaminEMgWeek,
+		&i.RecommendedVitaminKMcgWeek,
+		&i.RecommendedThiaminMgWeek,
+		&i.RecommendedRiboflavinMgWeek,
+		&i.RecommendedNiacinMgWeek,
+		&i.RecommendedPantothenicAcidMgWeek,
+		&i.RecommendedVitaminB6MgWeek,
+		&i.RecommendedBiotinMcgWeek,
+		&i.RecommendedFolateMcgWeek,
+		&i.RecommendedVitaminB12McgWeek,
+		&i.RecommendedSodiumMgDay,
+		&i.RecommendedCholesterolMgDay,
+		&i.RecommendedCaffeineMgDay,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getUserByID = `-- name: GetUserByID :one
+SELECT id, email, password_hash, display_name, date_of_birth, age, height_cm, sex, activity_level, timezone, maintenance_calories, recommended_calories, recommended_protein_g_day, recommended_carbohydrates_g_day, recommended_fat_g_day, recommended_fiber_g_day, recommended_sugars_g_day, recommended_saturated_fat_g_day, recommended_calcium_mg_week, recommended_iron_mg_week, recommended_magnesium_mg_week, recommended_phosphorus_mg_week, recommended_potassium_mg_week, recommended_zinc_mg_week, recommended_copper_mg_week, recommended_manganese_mg_week, recommended_selenium_mcg_week, recommended_vitamin_a_mcg_week, recommended_vitamin_c_mg_week, recommended_vitamin_d_mcg_week, recommended_vitamin_e_mg_week, recommended_vitamin_k_mcg_week, recommended_thiamin_mg_week, recommended_riboflavin_mg_week, recommended_niacin_mg_week, recommended_pantothenic_acid_mg_week, recommended_vitamin_b6_mg_week, recommended_biotin_mcg_week, recommended_folate_mcg_week, recommended_vitamin_b12_mcg_week, recommended_sodium_mg_day, recommended_cholesterol_mg_day, recommended_caffeine_mg_day, created_at, updated_at FROM users WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetUserByID(ctx context.Context, id pgtype.UUID) (User, error) {
+	row := q.db.QueryRow(ctx, getUserByID, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.DisplayName,
+		&i.DateOfBirth,
+		&i.Age,
+		&i.HeightCm,
+		&i.Sex,
+		&i.ActivityLevel,
+		&i.Timezone,
+		&i.MaintenanceCalories,
+		&i.RecommendedCalories,
+		&i.RecommendedProteinGDay,
+		&i.RecommendedCarbohydratesGDay,
+		&i.RecommendedFatGDay,
+		&i.RecommendedFiberGDay,
+		&i.RecommendedSugarsGDay,
+		&i.RecommendedSaturatedFatGDay,
+		&i.RecommendedCalciumMgWeek,
+		&i.RecommendedIronMgWeek,
+		&i.RecommendedMagnesiumMgWeek,
+		&i.RecommendedPhosphorusMgWeek,
+		&i.RecommendedPotassiumMgWeek,
+		&i.RecommendedZincMgWeek,
+		&i.RecommendedCopperMgWeek,
+		&i.RecommendedManganeseMgWeek,
+		&i.RecommendedSeleniumMcgWeek,
+		&i.RecommendedVitaminAMcgWeek,
+		&i.RecommendedVitaminCMgWeek,
+		&i.RecommendedVitaminDMcgWeek,
+		&i.RecommendedVitaminEMgWeek,
+		&i.RecommendedVitaminKMcgWeek,
+		&i.RecommendedThiaminMgWeek,
+		&i.RecommendedRiboflavinMgWeek,
+		&i.RecommendedNiacinMgWeek,
+		&i.RecommendedPantothenicAcidMgWeek,
+		&i.RecommendedVitaminB6MgWeek,
+		&i.RecommendedBiotinMcgWeek,
+		&i.RecommendedFolateMcgWeek,
+		&i.RecommendedVitaminB12McgWeek,
+		&i.RecommendedSodiumMgDay,
+		&i.RecommendedCholesterolMgDay,
+		&i.RecommendedCaffeineMgDay,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const updateUserProfile = `-- name: UpdateUserProfile :one
+UPDATE users
+SET
+display_name = $2,
+    date_of_birth = $3,
+    age = $4,
+    height_cm = $5,
+    sex = $6,
+    activity_level = $7,
+    timezone = COALESCE(NULLIF($8, ''), 'Asia/Kolkata'),
+    maintenance_calories = $9,
+    recommended_calories = $10,
+    recommended_protein_g_day = $11,
+    recommended_carbohydrates_g_day = $12,
+    recommended_fat_g_day = $13,
+    recommended_fiber_g_day = $14,
+    recommended_sugars_g_day = $15,
+    recommended_saturated_fat_g_day = $16,
+    recommended_calcium_mg_week = $17,
+    recommended_iron_mg_week = $18,
+    recommended_magnesium_mg_week = $19,
+    recommended_phosphorus_mg_week = $20,
+    recommended_potassium_mg_week = $21,
+    recommended_zinc_mg_week = $22,
+    recommended_copper_mg_week = $23,
+    recommended_manganese_mg_week = $24,
+    recommended_selenium_mcg_week = $25,
+    recommended_vitamin_a_mcg_week = $26,
+    recommended_vitamin_c_mg_week = $27,
+    recommended_vitamin_d_mcg_week = $28,
+    recommended_vitamin_e_mg_week = $29,
+    recommended_vitamin_k_mcg_week = $30,
+    recommended_thiamin_mg_week = $31,
+    recommended_riboflavin_mg_week = $32,
+    recommended_niacin_mg_week = $33,
+    recommended_pantothenic_acid_mg_week = $34,
+    recommended_vitamin_b6_mg_week = $35,
+    recommended_biotin_mcg_week = $36,
+    recommended_folate_mcg_week = $37,
+    recommended_vitamin_b12_mcg_week = $38,
+    recommended_sodium_mg_day = $39,
+    recommended_cholesterol_mg_day = $40,
+    recommended_caffeine_mg_day = $41,
+    updated_at = now()
+WHERE id = $1
+RETURNING id, email, password_hash, display_name, date_of_birth, age, height_cm, sex, activity_level, timezone, maintenance_calories, recommended_calories, recommended_protein_g_day, recommended_carbohydrates_g_day, recommended_fat_g_day, recommended_fiber_g_day, recommended_sugars_g_day, recommended_saturated_fat_g_day, recommended_calcium_mg_week, recommended_iron_mg_week, recommended_magnesium_mg_week, recommended_phosphorus_mg_week, recommended_potassium_mg_week, recommended_zinc_mg_week, recommended_copper_mg_week, recommended_manganese_mg_week, recommended_selenium_mcg_week, recommended_vitamin_a_mcg_week, recommended_vitamin_c_mg_week, recommended_vitamin_d_mcg_week, recommended_vitamin_e_mg_week, recommended_vitamin_k_mcg_week, recommended_thiamin_mg_week, recommended_riboflavin_mg_week, recommended_niacin_mg_week, recommended_pantothenic_acid_mg_week, recommended_vitamin_b6_mg_week, recommended_biotin_mcg_week, recommended_folate_mcg_week, recommended_vitamin_b12_mcg_week, recommended_sodium_mg_day, recommended_cholesterol_mg_day, recommended_caffeine_mg_day, created_at, updated_at
+`
+
+type UpdateUserProfileParams struct {
+	ID                               pgtype.UUID    `json:"id"`
+	DisplayName                      *string        `json:"display_name"`
+	DateOfBirth                      pgtype.Date    `json:"date_of_birth"`
+	Age                              *int32         `json:"age"`
+	HeightCm                         pgtype.Numeric `json:"height_cm"`
+	Sex                              *string        `json:"sex"`
+	ActivityLevel                    *string        `json:"activity_level"`
+	Column8                          interface{}    `json:"column_8"`
+	MaintenanceCalories              pgtype.Numeric `json:"maintenance_calories"`
+	RecommendedCalories              pgtype.Numeric `json:"recommended_calories"`
+	RecommendedProteinGDay           pgtype.Numeric `json:"recommended_protein_g_day"`
+	RecommendedCarbohydratesGDay     pgtype.Numeric `json:"recommended_carbohydrates_g_day"`
+	RecommendedFatGDay               pgtype.Numeric `json:"recommended_fat_g_day"`
+	RecommendedFiberGDay             pgtype.Numeric `json:"recommended_fiber_g_day"`
+	RecommendedSugarsGDay            pgtype.Numeric `json:"recommended_sugars_g_day"`
+	RecommendedSaturatedFatGDay      pgtype.Numeric `json:"recommended_saturated_fat_g_day"`
+	RecommendedCalciumMgWeek         pgtype.Numeric `json:"recommended_calcium_mg_week"`
+	RecommendedIronMgWeek            pgtype.Numeric `json:"recommended_iron_mg_week"`
+	RecommendedMagnesiumMgWeek       pgtype.Numeric `json:"recommended_magnesium_mg_week"`
+	RecommendedPhosphorusMgWeek      pgtype.Numeric `json:"recommended_phosphorus_mg_week"`
+	RecommendedPotassiumMgWeek       pgtype.Numeric `json:"recommended_potassium_mg_week"`
+	RecommendedZincMgWeek            pgtype.Numeric `json:"recommended_zinc_mg_week"`
+	RecommendedCopperMgWeek          pgtype.Numeric `json:"recommended_copper_mg_week"`
+	RecommendedManganeseMgWeek       pgtype.Numeric `json:"recommended_manganese_mg_week"`
+	RecommendedSeleniumMcgWeek       pgtype.Numeric `json:"recommended_selenium_mcg_week"`
+	RecommendedVitaminAMcgWeek       pgtype.Numeric `json:"recommended_vitamin_a_mcg_week"`
+	RecommendedVitaminCMgWeek        pgtype.Numeric `json:"recommended_vitamin_c_mg_week"`
+	RecommendedVitaminDMcgWeek       pgtype.Numeric `json:"recommended_vitamin_d_mcg_week"`
+	RecommendedVitaminEMgWeek        pgtype.Numeric `json:"recommended_vitamin_e_mg_week"`
+	RecommendedVitaminKMcgWeek       pgtype.Numeric `json:"recommended_vitamin_k_mcg_week"`
+	RecommendedThiaminMgWeek         pgtype.Numeric `json:"recommended_thiamin_mg_week"`
+	RecommendedRiboflavinMgWeek      pgtype.Numeric `json:"recommended_riboflavin_mg_week"`
+	RecommendedNiacinMgWeek          pgtype.Numeric `json:"recommended_niacin_mg_week"`
+	RecommendedPantothenicAcidMgWeek pgtype.Numeric `json:"recommended_pantothenic_acid_mg_week"`
+	RecommendedVitaminB6MgWeek       pgtype.Numeric `json:"recommended_vitamin_b6_mg_week"`
+	RecommendedBiotinMcgWeek         pgtype.Numeric `json:"recommended_biotin_mcg_week"`
+	RecommendedFolateMcgWeek         pgtype.Numeric `json:"recommended_folate_mcg_week"`
+	RecommendedVitaminB12McgWeek     pgtype.Numeric `json:"recommended_vitamin_b12_mcg_week"`
+	RecommendedSodiumMgDay           pgtype.Numeric `json:"recommended_sodium_mg_day"`
+	RecommendedCholesterolMgDay      pgtype.Numeric `json:"recommended_cholesterol_mg_day"`
+	RecommendedCaffeineMgDay         pgtype.Numeric `json:"recommended_caffeine_mg_day"`
+}
+
+func (q *Queries) UpdateUserProfile(ctx context.Context, arg UpdateUserProfileParams) (User, error) {
+	row := q.db.QueryRow(ctx, updateUserProfile,
+		arg.ID,
+		arg.DisplayName,
+		arg.DateOfBirth,
+		arg.Age,
+		arg.HeightCm,
+		arg.Sex,
+		arg.ActivityLevel,
+		arg.Column8,
+		arg.MaintenanceCalories,
+		arg.RecommendedCalories,
+		arg.RecommendedProteinGDay,
+		arg.RecommendedCarbohydratesGDay,
+		arg.RecommendedFatGDay,
+		arg.RecommendedFiberGDay,
+		arg.RecommendedSugarsGDay,
+		arg.RecommendedSaturatedFatGDay,
+		arg.RecommendedCalciumMgWeek,
+		arg.RecommendedIronMgWeek,
+		arg.RecommendedMagnesiumMgWeek,
+		arg.RecommendedPhosphorusMgWeek,
+		arg.RecommendedPotassiumMgWeek,
+		arg.RecommendedZincMgWeek,
+		arg.RecommendedCopperMgWeek,
+		arg.RecommendedManganeseMgWeek,
+		arg.RecommendedSeleniumMcgWeek,
+		arg.RecommendedVitaminAMcgWeek,
+		arg.RecommendedVitaminCMgWeek,
+		arg.RecommendedVitaminDMcgWeek,
+		arg.RecommendedVitaminEMgWeek,
+		arg.RecommendedVitaminKMcgWeek,
+		arg.RecommendedThiaminMgWeek,
+		arg.RecommendedRiboflavinMgWeek,
+		arg.RecommendedNiacinMgWeek,
+		arg.RecommendedPantothenicAcidMgWeek,
+		arg.RecommendedVitaminB6MgWeek,
+		arg.RecommendedBiotinMcgWeek,
+		arg.RecommendedFolateMcgWeek,
+		arg.RecommendedVitaminB12McgWeek,
+		arg.RecommendedSodiumMgDay,
+		arg.RecommendedCholesterolMgDay,
+		arg.RecommendedCaffeineMgDay,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.DisplayName,
+		&i.DateOfBirth,
+		&i.Age,
+		&i.HeightCm,
+		&i.Sex,
+		&i.ActivityLevel,
+		&i.Timezone,
+		&i.MaintenanceCalories,
+		&i.RecommendedCalories,
+		&i.RecommendedProteinGDay,
+		&i.RecommendedCarbohydratesGDay,
+		&i.RecommendedFatGDay,
+		&i.RecommendedFiberGDay,
+		&i.RecommendedSugarsGDay,
+		&i.RecommendedSaturatedFatGDay,
+		&i.RecommendedCalciumMgWeek,
+		&i.RecommendedIronMgWeek,
+		&i.RecommendedMagnesiumMgWeek,
+		&i.RecommendedPhosphorusMgWeek,
+		&i.RecommendedPotassiumMgWeek,
+		&i.RecommendedZincMgWeek,
+		&i.RecommendedCopperMgWeek,
+		&i.RecommendedManganeseMgWeek,
+		&i.RecommendedSeleniumMcgWeek,
+		&i.RecommendedVitaminAMcgWeek,
+		&i.RecommendedVitaminCMgWeek,
+		&i.RecommendedVitaminDMcgWeek,
+		&i.RecommendedVitaminEMgWeek,
+		&i.RecommendedVitaminKMcgWeek,
+		&i.RecommendedThiaminMgWeek,
+		&i.RecommendedRiboflavinMgWeek,
+		&i.RecommendedNiacinMgWeek,
+		&i.RecommendedPantothenicAcidMgWeek,
+		&i.RecommendedVitaminB6MgWeek,
+		&i.RecommendedBiotinMcgWeek,
+		&i.RecommendedFolateMcgWeek,
+		&i.RecommendedVitaminB12McgWeek,
+		&i.RecommendedSodiumMgDay,
+		&i.RecommendedCholesterolMgDay,
+		&i.RecommendedCaffeineMgDay,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

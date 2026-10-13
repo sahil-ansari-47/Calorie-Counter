@@ -6,6 +6,8 @@ package sqlc
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Querier interface {
@@ -15,6 +17,8 @@ type Querier interface {
 	GetFoodByExactName(ctx context.Context, arg GetFoodByExactNameParams) (GetFoodByExactNameRow, error)
 	GetFoodBySimilarName(ctx context.Context, arg GetFoodBySimilarNameParams) (GetFoodBySimilarNameRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
+	GetUserByID(ctx context.Context, id pgtype.UUID) (User, error)
+	UpdateUserProfile(ctx context.Context, arg UpdateUserProfileParams) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)

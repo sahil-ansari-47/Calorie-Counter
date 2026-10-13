@@ -8,18 +8,38 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type DailySummary struct {
+	UserID              pgtype.UUID        `json:"user_id"`
+	LogDate             pgtype.Date        `json:"log_date"`
+	MaintenanceCalories pgtype.Numeric     `json:"maintenance_calories"`
+	RecommendedCalories pgtype.Numeric     `json:"recommended_calories"`
+	CheatDay            bool               `json:"cheat_day"`
+	CaloriesConsumed    pgtype.Numeric     `json:"calories_consumed"`
+	ProteinG            pgtype.Numeric     `json:"protein_g"`
+	CarbohydratesG      pgtype.Numeric     `json:"carbohydrates_g"`
+	FatG                pgtype.Numeric     `json:"fat_g"`
+	EnergyBalanceKcal   pgtype.Numeric     `json:"energy_balance_kcal"`
+	TargetVarianceKcal  pgtype.Numeric     `json:"target_variance_kcal"`
+	UpdatedAt           pgtype.Timestamptz `json:"updated_at"`
+}
+
 type Food struct {
 	ID               pgtype.UUID        `json:"id"`
 	CanonicalName    string             `json:"canonical_name"`
 	NormalizedName   string             `json:"normalized_name"`
 	DisplayName      string             `json:"display_name"`
 	PreparationState *string            `json:"preparation_state"`
-	Quantity         pgtype.Numeric     `json:"quantity"`
-	QuantityUnit     string             `json:"quantity_unit"`
 	NutritionBasis   string             `json:"nutrition_basis"`
 	ProviderMetadata []byte             `json:"provider_metadata"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt        pgtype.Timestamptz `json:"updated_at"`
+}
+
+type FoodCatalogQuantityBackup struct {
+	FoodID       pgtype.UUID        `json:"food_id"`
+	Quantity     pgtype.Numeric     `json:"quantity"`
+	QuantityUnit *string            `json:"quantity_unit"`
+	MigratedAt   pgtype.Timestamptz `json:"migrated_at"`
 }
 
 type FoodNutrition struct {
@@ -60,10 +80,95 @@ type FoodNutrition struct {
 	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
 }
 
+type Meal struct {
+	ID        pgtype.UUID        `json:"id"`
+	UserID    pgtype.UUID        `json:"user_id"`
+	MealType  string             `json:"meal_type"`
+	LogDate   pgtype.Date        `json:"log_date"`
+	LoggedAt  pgtype.Timestamptz `json:"logged_at"`
+	Notes     *string            `json:"notes"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+}
+
+type MealItem struct {
+	ID                pgtype.UUID        `json:"id"`
+	MealID            pgtype.UUID        `json:"meal_id"`
+	FoodID            pgtype.UUID        `json:"food_id"`
+	DisplayName       string             `json:"display_name"`
+	Quantity          pgtype.Numeric     `json:"quantity"`
+	QuantityUnit      string             `json:"quantity_unit"`
+	WeightGrams       pgtype.Numeric     `json:"weight_grams"`
+	NutritionSnapshot []byte             `json:"nutrition_snapshot"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+}
+
 type User struct {
-	ID           pgtype.UUID        `json:"id"`
-	Email        string             `json:"email"`
-	PasswordHash string             `json:"password_hash"`
-	CreatedAt    pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	ID                               pgtype.UUID        `json:"id"`
+	Email                            string             `json:"email"`
+	PasswordHash                     string             `json:"password_hash"`
+	DisplayName                      *string            `json:"display_name"`
+	DateOfBirth                      pgtype.Date        `json:"date_of_birth"`
+	Age                              *int32             `json:"age"`
+	HeightCm                         pgtype.Numeric     `json:"height_cm"`
+	Sex                              *string            `json:"sex"`
+	ActivityLevel                    *string            `json:"activity_level"`
+	Timezone                         string             `json:"timezone"`
+	MaintenanceCalories              pgtype.Numeric     `json:"maintenance_calories"`
+	RecommendedCalories              pgtype.Numeric     `json:"recommended_calories"`
+	RecommendedProteinGDay           pgtype.Numeric     `json:"recommended_protein_g_day"`
+	RecommendedCarbohydratesGDay     pgtype.Numeric     `json:"recommended_carbohydrates_g_day"`
+	RecommendedFatGDay               pgtype.Numeric     `json:"recommended_fat_g_day"`
+	RecommendedFiberGDay             pgtype.Numeric     `json:"recommended_fiber_g_day"`
+	RecommendedSugarsGDay            pgtype.Numeric     `json:"recommended_sugars_g_day"`
+	RecommendedSaturatedFatGDay      pgtype.Numeric     `json:"recommended_saturated_fat_g_day"`
+	RecommendedCalciumMgWeek         pgtype.Numeric     `json:"recommended_calcium_mg_week"`
+	RecommendedIronMgWeek            pgtype.Numeric     `json:"recommended_iron_mg_week"`
+	RecommendedMagnesiumMgWeek       pgtype.Numeric     `json:"recommended_magnesium_mg_week"`
+	RecommendedPhosphorusMgWeek      pgtype.Numeric     `json:"recommended_phosphorus_mg_week"`
+	RecommendedPotassiumMgWeek       pgtype.Numeric     `json:"recommended_potassium_mg_week"`
+	RecommendedZincMgWeek            pgtype.Numeric     `json:"recommended_zinc_mg_week"`
+	RecommendedCopperMgWeek          pgtype.Numeric     `json:"recommended_copper_mg_week"`
+	RecommendedManganeseMgWeek       pgtype.Numeric     `json:"recommended_manganese_mg_week"`
+	RecommendedSeleniumMcgWeek       pgtype.Numeric     `json:"recommended_selenium_mcg_week"`
+	RecommendedVitaminAMcgWeek       pgtype.Numeric     `json:"recommended_vitamin_a_mcg_week"`
+	RecommendedVitaminCMgWeek        pgtype.Numeric     `json:"recommended_vitamin_c_mg_week"`
+	RecommendedVitaminDMcgWeek       pgtype.Numeric     `json:"recommended_vitamin_d_mcg_week"`
+	RecommendedVitaminEMgWeek        pgtype.Numeric     `json:"recommended_vitamin_e_mg_week"`
+	RecommendedVitaminKMcgWeek       pgtype.Numeric     `json:"recommended_vitamin_k_mcg_week"`
+	RecommendedThiaminMgWeek         pgtype.Numeric     `json:"recommended_thiamin_mg_week"`
+	RecommendedRiboflavinMgWeek      pgtype.Numeric     `json:"recommended_riboflavin_mg_week"`
+	RecommendedNiacinMgWeek          pgtype.Numeric     `json:"recommended_niacin_mg_week"`
+	RecommendedPantothenicAcidMgWeek pgtype.Numeric     `json:"recommended_pantothenic_acid_mg_week"`
+	RecommendedVitaminB6MgWeek       pgtype.Numeric     `json:"recommended_vitamin_b6_mg_week"`
+	RecommendedBiotinMcgWeek         pgtype.Numeric     `json:"recommended_biotin_mcg_week"`
+	RecommendedFolateMcgWeek         pgtype.Numeric     `json:"recommended_folate_mcg_week"`
+	RecommendedVitaminB12McgWeek     pgtype.Numeric     `json:"recommended_vitamin_b12_mcg_week"`
+	RecommendedSodiumMgDay           pgtype.Numeric     `json:"recommended_sodium_mg_day"`
+	RecommendedCholesterolMgDay      pgtype.Numeric     `json:"recommended_cholesterol_mg_day"`
+	RecommendedCaffeineMgDay         pgtype.Numeric     `json:"recommended_caffeine_mg_day"`
+	CreatedAt                        pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt                        pgtype.Timestamptz `json:"updated_at"`
+}
+
+type UserDietPlanHistory struct {
+	ID                       pgtype.UUID               `json:"id"`
+	UserID                   pgtype.UUID               `json:"user_id"`
+	DietPlan                 int16                     `json:"diet_plan"`
+	CalorieAdjustmentPercent pgtype.Numeric            `json:"calorie_adjustment_percent"`
+	EffectiveFrom            pgtype.Date               `json:"effective_from"`
+	EffectiveTo              pgtype.Date               `json:"effective_to"`
+	EffectiveRange           pgtype.Range[pgtype.Date] `json:"effective_range"`
+	CreatedAt                pgtype.Timestamptz        `json:"created_at"`
+}
+
+type UserWeightHistory struct {
+	ID             pgtype.UUID               `json:"id"`
+	UserID         pgtype.UUID               `json:"user_id"`
+	WeightKg       pgtype.Numeric            `json:"weight_kg"`
+	EffectiveFrom  pgtype.Date               `json:"effective_from"`
+	EffectiveTo    pgtype.Date               `json:"effective_to"`
+	EffectiveRange pgtype.Range[pgtype.Date] `json:"effective_range"`
+	CreatedAt      pgtype.Timestamptz        `json:"created_at"`
 }

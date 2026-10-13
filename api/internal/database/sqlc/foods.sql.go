@@ -12,19 +12,17 @@ import (
 )
 
 const createFood = `-- name: CreateFood :one
-INSERT INTO foods (id, canonical_name, normalized_name, display_name, preparation_state, quantity, quantity_unit, nutrition_basis, provider_metadata)
-VALUES ($1, $2, $3, $4, $5, $6, $7, 'per_100g', $8) RETURNING id, canonical_name, normalized_name, display_name, preparation_state, quantity, quantity_unit, nutrition_basis, provider_metadata, created_at, updated_at
+INSERT INTO foods (id, canonical_name, normalized_name, display_name, preparation_state, nutrition_basis, provider_metadata)
+VALUES ($1, $2, $3, $4, $5, 'per_100g', $6) RETURNING id, canonical_name, normalized_name, display_name, preparation_state, nutrition_basis, provider_metadata, created_at, updated_at
 `
 
 type CreateFoodParams struct {
-	ID               pgtype.UUID    `json:"id"`
-	CanonicalName    string         `json:"canonical_name"`
-	NormalizedName   string         `json:"normalized_name"`
-	DisplayName      string         `json:"display_name"`
-	PreparationState *string        `json:"preparation_state"`
-	Quantity         pgtype.Numeric `json:"quantity"`
-	QuantityUnit     string         `json:"quantity_unit"`
-	ProviderMetadata []byte         `json:"provider_metadata"`
+	ID               pgtype.UUID `json:"id"`
+	CanonicalName    string      `json:"canonical_name"`
+	NormalizedName   string      `json:"normalized_name"`
+	DisplayName      string      `json:"display_name"`
+	PreparationState *string     `json:"preparation_state"`
+	ProviderMetadata []byte      `json:"provider_metadata"`
 }
 
 func (q *Queries) CreateFood(ctx context.Context, arg CreateFoodParams) (Food, error) {
@@ -34,8 +32,6 @@ func (q *Queries) CreateFood(ctx context.Context, arg CreateFoodParams) (Food, e
 		arg.NormalizedName,
 		arg.DisplayName,
 		arg.PreparationState,
-		arg.Quantity,
-		arg.QuantityUnit,
 		arg.ProviderMetadata,
 	)
 	var i Food
@@ -45,8 +41,6 @@ func (q *Queries) CreateFood(ctx context.Context, arg CreateFoodParams) (Food, e
 		&i.NormalizedName,
 		&i.DisplayName,
 		&i.PreparationState,
-		&i.Quantity,
-		&i.QuantityUnit,
 		&i.NutritionBasis,
 		&i.ProviderMetadata,
 		&i.CreatedAt,
@@ -77,7 +71,7 @@ func (q *Queries) CreateFoodNutrition(ctx context.Context, arg CreateFoodNutriti
 }
 
 const getFoodByExactName = `-- name: GetFoodByExactName :one
-SELECT f.id, f.canonical_name, f.normalized_name, f.display_name, f.preparation_state, f.quantity, f.quantity_unit, f.nutrition_basis, f.provider_metadata, f.created_at, f.updated_at, n.food_id, n.calories::float8, n.protein::float8, n.carbohydrates::float8, n.fat::float8, n.fiber::float8, n.sugars::float8, n.saturated_fat::float8, n.sodium::float8, n.calcium::float8, n.iron::float8, n.magnesium::float8, n.phosphorus::float8, n.potassium::float8, n.zinc::float8, n.copper::float8, n.manganese::float8, n.selenium::float8, n.vitamin_a::float8, n.vitamin_c::float8, n.vitamin_d::float8, n.vitamin_e::float8, n.vitamin_k::float8, n.thiamin::float8, n.riboflavin::float8, n.niacin::float8, n.pantothenic_acid::float8, n.vitamin_b6::float8, n.biotin::float8, n.folate::float8, n.vitamin_b12::float8, n.caffeine::float8, n.cholesterol::float8, n.created_at, n.updated_at FROM foods f JOIN food_nutrition n ON n.food_id = f.id
+SELECT f.id, f.canonical_name, f.normalized_name, f.display_name, f.preparation_state, f.nutrition_basis, f.provider_metadata, f.created_at, f.updated_at, n.food_id, n.calories::float8, n.protein::float8, n.carbohydrates::float8, n.fat::float8, n.fiber::float8, n.sugars::float8, n.saturated_fat::float8, n.sodium::float8, n.calcium::float8, n.iron::float8, n.magnesium::float8, n.phosphorus::float8, n.potassium::float8, n.zinc::float8, n.copper::float8, n.manganese::float8, n.selenium::float8, n.vitamin_a::float8, n.vitamin_c::float8, n.vitamin_d::float8, n.vitamin_e::float8, n.vitamin_k::float8, n.thiamin::float8, n.riboflavin::float8, n.niacin::float8, n.pantothenic_acid::float8, n.vitamin_b6::float8, n.biotin::float8, n.folate::float8, n.vitamin_b12::float8, n.caffeine::float8, n.cholesterol::float8, n.created_at, n.updated_at FROM foods f JOIN food_nutrition n ON n.food_id = f.id
 WHERE f.normalized_name = $1 AND f.preparation_state IS NOT DISTINCT FROM $2 LIMIT 1
 `
 
@@ -92,8 +86,6 @@ type GetFoodByExactNameRow struct {
 	NormalizedName   string             `json:"normalized_name"`
 	DisplayName      string             `json:"display_name"`
 	PreparationState *string            `json:"preparation_state"`
-	Quantity         pgtype.Numeric     `json:"quantity"`
-	QuantityUnit     string             `json:"quantity_unit"`
 	NutritionBasis   string             `json:"nutrition_basis"`
 	ProviderMetadata []byte             `json:"provider_metadata"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
@@ -144,8 +136,6 @@ func (q *Queries) GetFoodByExactName(ctx context.Context, arg GetFoodByExactName
 		&i.NormalizedName,
 		&i.DisplayName,
 		&i.PreparationState,
-		&i.Quantity,
-		&i.QuantityUnit,
 		&i.NutritionBasis,
 		&i.ProviderMetadata,
 		&i.CreatedAt,
@@ -190,7 +180,7 @@ func (q *Queries) GetFoodByExactName(ctx context.Context, arg GetFoodByExactName
 }
 
 const getFoodBySimilarName = `-- name: GetFoodBySimilarName :one
-SELECT f.id, f.canonical_name, f.normalized_name, f.display_name, f.preparation_state, f.quantity, f.quantity_unit, f.nutrition_basis, f.provider_metadata, f.created_at, f.updated_at, n.food_id, n.calories::float8, n.protein::float8, n.carbohydrates::float8, n.fat::float8, n.fiber::float8, n.sugars::float8, n.saturated_fat::float8, n.sodium::float8, n.calcium::float8, n.iron::float8, n.magnesium::float8, n.phosphorus::float8, n.potassium::float8, n.zinc::float8, n.copper::float8, n.manganese::float8, n.selenium::float8, n.vitamin_a::float8, n.vitamin_c::float8, n.vitamin_d::float8, n.vitamin_e::float8, n.vitamin_k::float8, n.thiamin::float8, n.riboflavin::float8, n.niacin::float8, n.pantothenic_acid::float8, n.vitamin_b6::float8, n.biotin::float8, n.folate::float8, n.vitamin_b12::float8, n.caffeine::float8, n.cholesterol::float8, n.created_at, n.updated_at, similarity(f.normalized_name, $1) AS match_score
+SELECT f.id, f.canonical_name, f.normalized_name, f.display_name, f.preparation_state, f.nutrition_basis, f.provider_metadata, f.created_at, f.updated_at, n.food_id, n.calories::float8, n.protein::float8, n.carbohydrates::float8, n.fat::float8, n.fiber::float8, n.sugars::float8, n.saturated_fat::float8, n.sodium::float8, n.calcium::float8, n.iron::float8, n.magnesium::float8, n.phosphorus::float8, n.potassium::float8, n.zinc::float8, n.copper::float8, n.manganese::float8, n.selenium::float8, n.vitamin_a::float8, n.vitamin_c::float8, n.vitamin_d::float8, n.vitamin_e::float8, n.vitamin_k::float8, n.thiamin::float8, n.riboflavin::float8, n.niacin::float8, n.pantothenic_acid::float8, n.vitamin_b6::float8, n.biotin::float8, n.folate::float8, n.vitamin_b12::float8, n.caffeine::float8, n.cholesterol::float8, n.created_at, n.updated_at, similarity(f.normalized_name, $1) AS match_score
 FROM foods f JOIN food_nutrition n ON n.food_id = f.id
 WHERE similarity(f.normalized_name, $1) >= $2
 ORDER BY similarity(f.normalized_name, $1) DESC LIMIT 1
@@ -207,8 +197,6 @@ type GetFoodBySimilarNameRow struct {
 	NormalizedName   string             `json:"normalized_name"`
 	DisplayName      string             `json:"display_name"`
 	PreparationState *string            `json:"preparation_state"`
-	Quantity         pgtype.Numeric     `json:"quantity"`
-	QuantityUnit     string             `json:"quantity_unit"`
 	NutritionBasis   string             `json:"nutrition_basis"`
 	ProviderMetadata []byte             `json:"provider_metadata"`
 	CreatedAt        pgtype.Timestamptz `json:"created_at"`
@@ -260,8 +248,6 @@ func (q *Queries) GetFoodBySimilarName(ctx context.Context, arg GetFoodBySimilar
 		&i.NormalizedName,
 		&i.DisplayName,
 		&i.PreparationState,
-		&i.Quantity,
-		&i.QuantityUnit,
 		&i.NutritionBasis,
 		&i.ProviderMetadata,
 		&i.CreatedAt,

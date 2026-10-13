@@ -9,8 +9,8 @@ WHERE similarity(f.normalized_name, $1) >= $2
 ORDER BY similarity(f.normalized_name, $1) DESC LIMIT 1;
 
 -- name: CreateFood :one
-INSERT INTO foods (id, canonical_name, normalized_name, display_name, preparation_state, quantity, quantity_unit, nutrition_basis, provider_metadata)
-VALUES ($1, $2, $3, $4, $5, $6, $7, 'per_100g', $8) RETURNING *;
+INSERT INTO foods (id, canonical_name, normalized_name, display_name, preparation_state, nutrition_basis, provider_metadata)
+VALUES ($1, $2, $3, $4, $5, 'per_100g', $6) RETURNING *;
 
 -- name: CreateFoodNutrition :exec
 INSERT INTO food_nutrition (food_id, calories, protein, carbohydrates, fat, fiber, sugars, saturated_fat, sodium, calcium, iron, magnesium, phosphorus, potassium, zinc, copper, manganese, selenium, vitamin_a, vitamin_c, vitamin_d, vitamin_e, vitamin_k, thiamin, riboflavin, niacin, pantothenic_acid, vitamin_b6, biotin, folate, vitamin_b12, caffeine, cholesterol)

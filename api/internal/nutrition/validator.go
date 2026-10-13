@@ -13,7 +13,7 @@ func Validate(food *GeneratedFood) error {
 	if food == nil || strings.TrimSpace(food.CanonicalName) == "" || strings.TrimSpace(food.DisplayName) == "" || food.Quantity <= 0 || food.NutritionBasis != "per_100g" {
 		return ErrInvalidNutrition
 	}
-	if food.QuantityUnit != "g" && food.QuantityUnit != "ml" && food.QuantityUnit != "oz" && food.QuantityUnit != "serving" {
+	if food.QuantityUnit != "g" && food.QuantityUnit != "ml" && food.QuantityUnit != "unit" {
 		return ErrInvalidNutrition
 	}
 	if food.PreparationState != nil && !validStates[*food.PreparationState] {

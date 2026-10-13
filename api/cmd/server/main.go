@@ -58,6 +58,9 @@ func main() {
 	api.POST("/auth/register", authHandler.Register)
 	api.POST("/auth/login", authHandler.Login)
 	protected := api.Group("", tokens.Middleware)
+	protected.GET("/me", authHandler.Me)
+	protected.GET("/me/recommendations", authHandler.Recommendations)
+	protected.PUT("/me/profile", authHandler.UpdateProfile)
 	protected.POST("/foods/search", foodHandler.Search)
 	go func() {
 		if serveErr := (echo.StartConfig{Address: ":" + cfg.ServerPort, HideBanner: true}).Start(ctx, e); serveErr != nil && !errors.Is(serveErr, context.Canceled) {
